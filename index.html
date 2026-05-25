@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- SwiperJS for smooth gallery swiping on mobile -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   
   <style>
@@ -20,18 +19,26 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      overflow-x: hidden;
+      width: 100%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Montserrat', sans-serif;
       background: #0f0707;
       overflow-x: hidden;
       overflow-y: auto;
       position: relative;
-      overscroll-behavior-y: contain;
+      width: 100%;
+      max-width: 100%;
     }
 
-    /* Custom scrollbar - elegant but light */
+    /* Custom scrollbar - elegant */
     ::-webkit-scrollbar {
-      width: 4px;
+      width: 6px;
     }
     ::-webkit-scrollbar-track {
       background: #2a1515;
@@ -39,6 +46,9 @@
     ::-webkit-scrollbar-thumb {
       background: #d4af37;
       border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e4c655;
     }
 
     /* INTRO SCREEN */
@@ -55,6 +65,7 @@
       justify-content: center;
       transition: opacity 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       backdrop-filter: blur(3px);
+      overflow: hidden;
     }
 
     .intro-card {
@@ -127,9 +138,14 @@
     .main-site {
       display: none;
       background: #0f0707;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
     }
 
-    /* floating petals canvas - lightweight */
+    /* floating petals canvas - no overflow contribution */
     #petalCanvas {
       position: fixed;
       top: 0;
@@ -139,21 +155,40 @@
       pointer-events: none;
       z-index: 12;
       opacity: 0.55;
+      overflow: hidden;
     }
 
-    /* HERO Section - improved contrast */
+    /* ===== FIXED BACKGROUND HERO - Image stays in place while content scrolls ===== */
     .hero-section {
-      min-height: 90vh;
-      background: linear-gradient(135deg, rgba(15,5,5,0.85), rgba(0,0,0,0.8)), url('images/photo1.jpg') center/cover no-repeat;
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      position: relative;
-      padding: 2rem 1rem;
+      overflow-x: hidden;
+      /* This creates the fixed background effect */
+      background-attachment: fixed;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
-
+    
+    /* Overlay and content layer on top of fixed background */
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(15,5,5,0.75), rgba(0,0,0,0.7));
+      z-index: 1;
+    }
+    
     .hero-content {
+      position: relative;
+      z-index: 2;
       background: rgba(0, 0, 0, 0.65);
       backdrop-filter: blur(16px);
       border-radius: 48px;
@@ -162,6 +197,7 @@
       box-shadow: 0 25px 40px rgba(0,0,0,0.6);
       width: 94%;
       max-width: 750px;
+      margin: 2rem auto;
     }
 
     .invite-badge {
@@ -193,17 +229,22 @@
       color: #ffefcf;
       line-height: 1.4;
       word-break: break-word;
+      max-width: 90vw;
     }
     .wedding-date-hero i {
       color: #e9bc5c;
       margin-right: 6px;
     }
 
-    /* Countdown premium - fixed */
+    /* Countdown premium */
     .countdown-wrapper {
       background: #120a0a;
       padding: 4rem 1rem;
       text-align: center;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 5;
     }
     .section-title {
       font-family: 'Cormorant Garamond', serif;
@@ -223,6 +264,7 @@
       flex-wrap: wrap;
       max-width: 500px;
       margin: 0 auto;
+      width: 100%;
     }
     .time-card {
       background: rgba(25, 12, 12, 0.95);
@@ -253,15 +295,20 @@
       .time-num { font-size: 2rem; }
     }
 
-    /* === SWIPER GALLERY - MODERN CAROUSEL === */
+    /* GALLERY - SWIPER */
     .gallery-premium {
       background: #0f0707;
-      padding: 4rem 0.8rem;
+      padding: 4rem 1rem;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 5;
     }
     .swiper-container {
       width: 100%;
       padding-bottom: 2.5rem;
       overflow: visible;
+      max-width: 100%;
     }
     .swiper-slide {
       border-radius: 32px;
@@ -279,12 +326,12 @@
       object-fit: cover;
       display: block;
       transition: transform 0.5s cubic-bezier(.4,2,.3,1), filter 0.4s;
-      filter: brightness(0.97) contrast(1.08) saturate(1.12) drop-shadow(0 2px 18px #0008);
+      filter: brightness(0.97) contrast(1.08) saturate(1.12);
       border-radius: 28px;
     }
     .swiper-slide-active img {
       transform: scale(1.04) rotate(-1deg);
-      filter: brightness(1.04) contrast(1.13) saturate(1.18) drop-shadow(0 4px 24px #d4af3740);
+      filter: brightness(1.04) contrast(1.13) saturate(1.18);
     }
     .gallery-caption {
       position: absolute;
@@ -326,6 +373,10 @@
       background: linear-gradient(125deg, #140a0a, #0a0404);
       padding: 4rem 1rem;
       text-align: center;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 5;
     }
     .rsvp-container {
       max-width: 620px;
@@ -335,6 +386,7 @@
       border-radius: 52px;
       padding: 2rem 1.4rem;
       border: 1px solid rgba(212,175,55,0.55);
+      width: 100%;
     }
     .form-group {
       margin-bottom: 1.2rem;
@@ -350,6 +402,7 @@
       outline: none;
       transition: 0.2s;
       font-family: 'Montserrat', sans-serif;
+      box-sizing: border-box;
     }
     .rsvp-container textarea {
       border-radius: 32px;
@@ -371,10 +424,10 @@
       transition: 0.2s;
       font-size: 1rem;
       letter-spacing: 0.5px;
+      box-sizing: border-box;
     }
     .rsvp-btn:active { transform: scale(0.97); }
 
-    /* Footer */
     .footer-romantic {
       background: #0a0303;
       text-align: center;
@@ -382,6 +435,10 @@
       color: #b68f3c;
       font-size: 0.75rem;
       border-top: 1px solid #573f18;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 5;
     }
 
     /* Toast Notifications */
@@ -409,6 +466,21 @@
     .toast-msg.show {
       transform: translateX(-50%) translateY(0);
     }
+
+    /* Mobile fallback: for devices that don't support fixed attachment well, we use a normal cover */
+    @supports not (background-attachment: fixed) {
+      .hero-section {
+        background-attachment: scroll;
+      }
+    }
+    
+    /* Ensure no horizontal overflow */
+    body, .main-site, .countdown-wrapper, .gallery-premium, .rsvp-luxury, .footer-romantic {
+      overflow-x: hidden;
+    }
+    img, canvas, iframe {
+      max-width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -425,13 +497,15 @@
 <div class="main-site" id="mainSite">
   <canvas id="petalCanvas"></canvas>
 
-  <div class="hero-section">
+  <!-- HERO SECTION WITH FIXED BACKGROUND IMAGE -->
+  <div class="hero-section" id="fixedHeroBg">
+    <div class="hero-overlay"></div>
     <div class="hero-content" data-aos="fade-up">
       <div class="invite-badge"><i class="fas fa-star-of-life"></i> SAVE THE DATE <i class="fas fa-star-of-life"></i></div>
       <h1 class="couple-name-hero">Vivek <i class="fas fa-infinity"></i> Mital</h1>
       <p style="color:#fff0cc; margin: 0.8rem 0 0.3rem; font-size: 0.95rem; font-weight: 500;">Together with families, request your presence</p>
       <div class="wedding-date-hero">
-        <i class="fas fa-calendar-alt"></i> 18 June 2025 · 10:00 AM &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <i class="fas fa-calendar-alt"></i> 18 June 2026 · 10:00 AM &nbsp;&nbsp;|&nbsp;&nbsp; 
         <i class="fas fa-map-marker-alt"></i> HRG4+34P, National Highway 8A, Ganesh Park 3, Paras Nagar Limbdi, Gujarat 363421
       </div>
     </div>
@@ -447,12 +521,12 @@
     </div>
   </div>
 
-  <!-- ETERNAL MOMENTS: SWIPER GALLERY SMOOTH SWIPE -->
+  <!-- ETERNAL MOMENTS: SWIPER GALLERY -->
   <div class="gallery-premium">
     <h2 class="section-title" data-aos="fade-left"><i class="fas fa-camera"></i> Eternal Moments</h2>
     <div class="swiper-container gallerySwiper" data-aos="fade-up">
       <div class="swiper-wrapper" id="swiperWrapper">
-        <!-- dynamic -->
+        <!-- dynamic images injected -->
       </div>
       <div class="swiper-pagination"></div>
       <div class="swiper-button-prev"></div>
@@ -484,7 +558,7 @@
 
   <div class="footer-romantic">
     <p><i class="fas fa-feather-alt"></i> Together is a beautiful place to be <i class="fas fa-feather-alt"></i></p>
-    <p style="margin-top: 5px;">Vivek & Mital | 18th June 2025</p>
+    <p style="margin-top: 5px;">Vivek & Mital | 18th June 2026</p>
   </div>
 
   <div id="toastMsg" class="toast-msg">✨ Your warmth received ✨</div>
@@ -494,6 +568,52 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
   (function() {
+    // Set fixed background image dynamically (keeps it always in same place)
+    const heroSection = document.getElementById('fixedHeroBg');
+    // Primary background image - same image stays fixed as you scroll
+    const backgroundImageUrl = "url('images/photo1.jpg')";
+    if (heroSection) {
+      heroSection.style.backgroundImage = backgroundImageUrl;
+      heroSection.style.backgroundAttachment = "fixed";
+      heroSection.style.backgroundPosition = "center center";
+      heroSection.style.backgroundRepeat = "no-repeat";
+      heroSection.style.backgroundSize = "cover";
+    }
+    
+    // ----- PREVENT HORIZONTAL OVERFLOW AND VERTICAL SMOOTH SCROLL -----
+    function preventHorizontalScrollGlobally(e) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 12) {
+        e.preventDefault();
+        return false;
+      }
+      if (e.target.closest && e.target.closest('.swiper-container')) {
+        return;
+      }
+      if (e.type === 'wheel' && Math.abs(e.deltaX) > 12) {
+        e.preventDefault();
+      }
+    }
+    window.addEventListener('wheel', preventHorizontalScrollGlobally, { passive: false });
+    
+    let touchStartX = 0;
+    let touchStartY = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+      const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+      const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+      const insideSwiper = !!e.target.closest?.('.swiper-container');
+      if (!insideSwiper && deltaX > deltaY && deltaX > 12) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    
+    document.documentElement.style.overflowX = 'hidden';
+    document.body.style.overflowX = 'hidden';
+    
     // ========== 1. Intro logic ==========
     const introDiv = document.getElementById('introScreen');
     const mainSite = document.getElementById('mainSite');
@@ -505,58 +625,49 @@
         introDiv.style.display = 'none';
         mainSite.style.display = 'block';
         document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflowX = 'hidden';
+        document.documentElement.style.overflowX = 'hidden';
         initFallingPetals();
-        // ensure swiper updates after display block
         setTimeout(() => {
           if(window.gallerySwiperInstance) {
             window.gallerySwiperInstance.update();
             window.gallerySwiperInstance.autoplay?.start();
           }
         }, 200);
+        AOS.refresh();
       }, 950);
     }
     if(openBtn) openBtn.addEventListener('click', openInvite);
-
-    // ========== 2. Countdown to June 18, 2025 10:00 AM IST ==========
-    // Using IST (GMT+5:30) explicitly
-    const targetDate = new Date("June 18, 2025 10:00:00 GMT+0530");
+    
+    // ========== 2. Countdown to June 18, 2026 10:00 AM IST ==========
+    const targetDate = new Date("June 18, 2026 10:00:00 GMT+0530");
     
     function updateCountdown() {
       const now = new Date();
       const diff = targetDate.getTime() - now.getTime();
-      
       const daysElem = document.getElementById("days");
       const hoursElem = document.getElementById("hours");
       const minutesElem = document.getElementById("minutes");
       const secondsElem = document.getElementById("seconds");
-      
       if (!daysElem) return;
-      
       if (diff <= 0) {
-        daysElem.innerHTML = "00";
-        hoursElem.innerHTML = "00";
-        minutesElem.innerHTML = "00";
-        secondsElem.innerHTML = "00";
+        daysElem.innerHTML = "00"; hoursElem.innerHTML = "00"; minutesElem.innerHTML = "00"; secondsElem.innerHTML = "00";
         return;
       }
-      
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff % (86400000)) / 3600000);
       const minutes = Math.floor((diff % 3600000) / 60000);
       const seconds = Math.floor((diff % 60000) / 1000);
-      
       daysElem.innerHTML = days < 10 ? '0' + days : days;
       hoursElem.innerHTML = hours < 10 ? '0' + hours : hours;
       minutesElem.innerHTML = minutes < 10 ? '0' + minutes : minutes;
       secondsElem.innerHTML = seconds < 10 ? '0' + seconds : seconds;
     }
-    
-    // immediate call and set interval
     updateCountdown();
     setInterval(updateCountdown, 1000);
     
-    // ========== 3. GALLERY with SwiperJS - better performance ==========
-    // Use local images from images/ folder
+    // ========== 3. GALLERY with SwiperJS ==========
     const galleryPhotos = [
       "images/photo1.jpg",
       "images/photo2.jpg",
@@ -566,14 +677,14 @@
       "images/photo6.jpg"
     ];
     const captions = ["Timeless Vows", "Radiance of Love", "Eternal Glow", "Sacred Union", "Joyful Hearts", "Ever After"];
-
+    
     const swiperWrapper = document.getElementById('swiperWrapper');
     if (swiperWrapper) {
       galleryPhotos.forEach((src, idx) => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
         slide.innerHTML = `
-          <img src="${src}" alt="Love moment ${idx+1}" loading="lazy">
+          <img src="${src}" alt="Love moment ${idx+1}" loading="lazy" onerror="this.src='https://placehold.co/600x800/2a1414/d4af37?text=Love+Story'">
           <div class="gallery-caption"><i class="fas fa-heart" style="font-size:0.7rem;"></i> ${captions[idx]} <i class="fas fa-heart" style="font-size:0.7rem;"></i></div>
         `;
         swiperWrapper.appendChild(slide);
@@ -599,11 +710,13 @@
         touchRatio: 1.3,
         resistance: true,
         grabCursor: true,
+        observeParents: true,
+        observeSlotChildren: true
       });
       window.gallerySwiperInstance = gallerySwiper;
     }
     
-    // ========== 4. Falling petals animation - highly optimized for mobile ==========
+    // ========== 4. Falling petals animation ==========
     let animFrameId = null;
     function initFallingPetals() {
       const canvas = document.getElementById('petalCanvas');
@@ -614,20 +727,20 @@
       canvas.width = width;
       canvas.height = height;
       
-      const petalCount = Math.min(10, Math.floor(window.innerWidth / 90) + 4);
-      const symbols = ['🌸', '🌼', '🌺', '🍂', '🌷'];
+      const petalCount = Math.min(12, Math.floor(window.innerWidth / 80) + 4);
+      const symbols = ['🌸', '🌼', '🌺', '🍂', '🌷', '✨'];
       const petals = [];
       for (let i = 0; i < petalCount; i++) {
         petals.push({
           x: Math.random() * width,
           y: Math.random() * height - height,
           size: 14 + Math.random() * 8,
-          speedY: 0.5 + Math.random() * 0.6,
+          speedY: 0.4 + Math.random() * 0.7,
           speedX: (Math.random() - 0.5) * 0.2,
           rotation: Math.random() * 360,
           spin: 0.2 + Math.random() * 0.4,
           char: symbols[Math.floor(Math.random() * symbols.length)],
-          opacity: 0.55 + Math.random() * 0.35
+          opacity: 0.5 + Math.random() * 0.35
         });
       }
       
@@ -644,7 +757,7 @@
           ctx.shadowBlur = 3;
           ctx.shadowColor = "rgba(200,150,50,0.3)";
           ctx.globalAlpha = p.opacity;
-          ctx.fillStyle = `rgba(245, 215, 130, 0.85)`;
+          ctx.fillStyle = `rgba(250, 225, 150, 0.9)`;
           ctx.fillText(p.char, 0, 0);
           ctx.restore();
           
@@ -701,7 +814,7 @@
       });
     }
     
-    // ========== 6. Initialize gallery after main site becomes visible ==========
+    // ========== 6. Initialize gallery and AOS ==========
     const observer = new MutationObserver((mutations) => {
       if (mainSite.style.display === 'block') {
         if (!window.galleryInitialized) {
@@ -713,7 +826,6 @@
     });
     observer.observe(mainSite, { attributes: true, attributeFilter: ['style'] });
     
-    // Fallback if already visible after load
     window.addEventListener('load', () => {
       if (mainSite.style.display === 'block' && !window.galleryInitialized) {
         initSwiperGallery();
@@ -721,19 +833,21 @@
       } else if (mainSite.style.display === 'block' && window.gallerySwiperInstance) {
         setTimeout(() => window.gallerySwiperInstance.update(), 100);
       }
-      // Also init AOS
-      AOS.init({ duration: 700, once: true, offset: 10 });
+      AOS.init({ duration: 700, once: true, offset: 10, disable: false });
     });
     
-    // Ensure body scroll initially locked for intro, but main allows scroll
     document.body.style.overflow = 'hidden';
-    setTimeout(() => {
-      if (introDiv.style.display === 'none') document.body.style.overflow = 'auto';
-    }, 200);
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflowX = 'hidden';
+    document.documentElement.style.overflowX = 'hidden';
     
-    // extra safety for swiper on orientation
     window.addEventListener('resize', () => {
       if (window.gallerySwiperInstance) setTimeout(() => window.gallerySwiperInstance.update(), 80);
+      if (window.AOS) AOS.refresh();
+      // ensure background fixed position remains correct
+      if (heroSection) {
+        heroSection.style.backgroundAttachment = "fixed";
+      }
     });
   })();
 </script>
