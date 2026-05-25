@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <title>Eternal Union | Vivek & Mital</title>
+  
+  <!-- Google Fonts & Icons & Lightweight Libraries -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- SwiperJS for smooth gallery swiping on mobile -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0f0707;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      overscroll-behavior-y: contain;
+    }
+
+    /* Custom scrollbar - elegant but light */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #2a1515;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d4af37;
+      border-radius: 10px;
+    }
+
+    /* INTRO SCREEN */
+    .intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: radial-gradient(circle at 40% 50%, #2f1919 0%, #0a0303 100%);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      backdrop-filter: blur(3px);
+    }
+
+    .intro-card {
+      text-align: center;
+      padding: 1.5rem;
+      animation: floatGlow 2.5s ease-in-out infinite;
+      max-width: 85%;
+    }
+
+    @keyframes floatGlow {
+      0% { transform: translateY(0px); text-shadow: 0 0 5px rgba(212,175,55,0.2); }
+      50% { transform: translateY(-10px); text-shadow: 0 0 28px rgba(212,175,55,0.7); }
+      100% { transform: translateY(0px); text-shadow: 0 0 5px rgba(212,175,55,0.2); }
+    }
+
+    .intro-icon {
+      font-size: 3.8rem;
+      color: #e4bc6e;
+      margin-bottom: 0.7rem;
+      animation: gentlePulse 1.6s infinite;
+    }
+
+    @keyframes gentlePulse {
+      0% { transform: scale(0.96); opacity: 0.9; }
+      100% { transform: scale(1.08); opacity: 1; }
+    }
+
+    .intro-greeting {
+      font-family: 'Parisienne', cursive;
+      font-size: 2rem;
+      color: #eedb9b;
+      letter-spacing: 1px;
+    }
+
+    .intro-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #ffe1a0;
+      margin: 0.3rem 0;
+      text-shadow: 0 0 15px rgba(212,175,55,0.7);
+    }
+
+    @media (max-width: 550px) {
+      .intro-names { font-size: 2.4rem; }
+      .intro-greeting { font-size: 1.7rem; }
+    }
+
+    .open-btn {
+      margin-top: 2rem;
+      background: linear-gradient(115deg, #d4af37, #b8891f);
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #241010;
+      border-radius: 60px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .open-btn:active { transform: scale(0.96); }
+
+    /* MAIN SITE */
+    .main-site {
+      display: none;
+      background: #0f0707;
+    }
+
+    /* floating petals canvas - lightweight */
+    #petalCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 12;
+      opacity: 0.55;
+    }
+
+    /* HERO Section - improved contrast */
+    .hero-section {
+      min-height: 90vh;
+      background: linear-gradient(135deg, rgba(15,5,5,0.85), rgba(0,0,0,0.8)), url('images/photo1.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 2rem 1rem;
+    }
+
+    .hero-content {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(16px);
+      border-radius: 48px;
+      padding: 2rem 1.2rem;
+      border: 1px solid rgba(212,175,55,0.7);
+      box-shadow: 0 25px 40px rgba(0,0,0,0.6);
+      width: 94%;
+      max-width: 750px;
+    }
+
+    .invite-badge {
+      color: #f3df99;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+    }
+
+    .couple-name-hero {
+      font-family: 'Parisienne', cursive;
+      font-size: 3.5rem;
+      color: #ffefb9;
+      margin: 0.5rem 0;
+      text-shadow: 0 0 12px #b8860b;
+    }
+    @media (max-width: 600px) {
+      .couple-name-hero { font-size: 2.8rem; }
+    }
+
+    .wedding-date-hero {
+      font-size: 1rem;
+      background: rgba(0,0,0,0.65);
+      display: inline-block;
+      padding: 0.7rem 1.5rem;
+      border-radius: 60px;
+      margin-top: 1rem;
+      border: 1px solid #d4af37;
+      font-weight: 600;
+      color: #ffefcf;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .wedding-date-hero i {
+      color: #e9bc5c;
+      margin-right: 6px;
+    }
+
+    /* Countdown premium - fixed */
+    .countdown-wrapper {
+      background: #120a0a;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem;
+      color: #e9cf75;
+      margin-bottom: 2rem;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 550px) {
+      .section-title { font-size: 2rem; }
+    }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .time-card {
+      background: rgba(25, 12, 12, 0.95);
+      backdrop-filter: blur(4px);
+      padding: 0.9rem 0.5rem;
+      border-radius: 28px;
+      min-width: 75px;
+      text-align: center;
+      border-bottom: 3px solid #d4af37;
+      transition: all 0.2s;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    }
+    .time-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #ffde9e;
+      font-family: 'Montserrat', monospace;
+      letter-spacing: 2px;
+    }
+    .time-label {
+      color: #dbb152;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    @media (max-width: 480px) {
+      .time-card { min-width: 68px; padding: 0.6rem 0.3rem; }
+      .time-num { font-size: 2rem; }
+    }
+
+    /* === SWIPER GALLERY - MODERN CAROUSEL === */
+    .gallery-premium {
+      background: #0f0707;
+      padding: 4rem 0.8rem;
+    }
+    .swiper-container {
+      width: 100%;
+      padding-bottom: 2.5rem;
+      overflow: visible;
+    }
+    .swiper-slide {
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.6);
+      transition: 0.3s;
+      aspect-ratio: 4 / 5;
+      background: #1f1111;
+      position: relative;
+      border: 3px solid #d4af37;
+    }
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(.4,2,.3,1), filter 0.4s;
+      filter: brightness(0.97) contrast(1.08) saturate(1.12) drop-shadow(0 2px 18px #0008);
+      border-radius: 28px;
+    }
+    .swiper-slide-active img {
+      transform: scale(1.04) rotate(-1deg);
+      filter: brightness(1.04) contrast(1.13) saturate(1.18) drop-shadow(0 4px 24px #d4af3740);
+    }
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, #000000cc, transparent);
+      padding: 1.2rem 0.8rem 0.6rem;
+      text-align: center;
+      color: #ffefc0;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(3px);
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .swiper-pagination-bullet {
+      background: #c9a03d;
+      opacity: 0.6;
+    }
+    .swiper-pagination-bullet-active {
+      background: #f3cd77;
+      opacity: 1;
+    }
+    .swiper-button-next, .swiper-button-prev {
+      color: #f3cd77;
+      background: rgba(0,0,0,0.4);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      backdrop-filter: blur(4px);
+    }
+    .swiper-button-next:after, .swiper-button-prev:after {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    /* RSVP form */
+    .rsvp-luxury {
+      background: linear-gradient(125deg, #140a0a, #0a0404);
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .rsvp-container {
+      max-width: 620px;
+      margin: auto;
+      background: rgba(30, 18, 18, 0.85);
+      backdrop-filter: blur(14px);
+      border-radius: 52px;
+      padding: 2rem 1.4rem;
+      border: 1px solid rgba(212,175,55,0.55);
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .rsvp-container input, .rsvp-container select, .rsvp-container textarea {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: #2b1818;
+      border: 1px solid #a67c2e;
+      border-radius: 60px;
+      font-size: 0.95rem;
+      color: #f7eccb;
+      outline: none;
+      transition: 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .rsvp-container textarea {
+      border-radius: 32px;
+      resize: vertical;
+    }
+    .rsvp-container input:focus, .rsvp-container select:focus, .rsvp-container textarea:focus {
+      border-color: #efcb6e;
+      box-shadow: 0 0 6px #e1b34b;
+    }
+    .rsvp-btn {
+      background: linear-gradient(95deg, #dbb42c, #ac7e1d);
+      border: none;
+      padding: 0.9rem;
+      font-weight: bold;
+      color: #1e0b0b;
+      border-radius: 60px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
+    .rsvp-btn:active { transform: scale(0.97); }
+
+    /* Footer */
+    .footer-romantic {
+      background: #0a0303;
+      text-align: center;
+      padding: 1.8rem;
+      color: #b68f3c;
+      font-size: 0.75rem;
+      border-top: 1px solid #573f18;
+    }
+
+    /* Toast Notifications */
+    .toast-msg {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1f1111ef;
+      backdrop-filter: blur(14px);
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      color: #ffe0a3;
+      font-size: 0.85rem;
+      border-left: 3px solid #e4bc5c;
+      z-index: 300;
+      transition: 0.35s ease;
+      max-width: 90vw;
+      white-space: normal;
+      text-align: center;
+      font-weight: 500;
+      pointer-events: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<div class="intro" id="introScreen">
+  <div class="intro-card">
+    <div class="intro-icon"><i class="fas fa-feather-alt"></i></div>
+    <div class="intro-greeting">A celebration of love</div>
+    <div class="intro-names">Vivek <span style="font-size: 2.2rem;">&</span> Mital</div>
+    <button class="open-btn" id="openInviteBtn">Open the Invitation <i class="fas fa-heart"></i></button>
+  </div>
+</div>
+
+<div class="main-site" id="mainSite">
+  <canvas id="petalCanvas"></canvas>
+
+  <div class="hero-section">
+    <div class="hero-content" data-aos="fade-up">
+      <div class="invite-badge"><i class="fas fa-star-of-life"></i> SAVE THE DATE <i class="fas fa-star-of-life"></i></div>
+      <h1 class="couple-name-hero">Vivek <i class="fas fa-infinity"></i> Mital</h1>
+      <p style="color:#fff0cc; margin: 0.8rem 0 0.3rem; font-size: 0.95rem; font-weight: 500;">Together with families, request your presence</p>
+      <div class="wedding-date-hero">
+        <i class="fas fa-calendar-alt"></i> 18 June 2025 · 10:00 AM &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <i class="fas fa-map-marker-alt"></i> HRG4+34P, National Highway 8A, Ganesh Park 3, Paras Nagar Limbdi, Gujarat 363421
+      </div>
+    </div>
+  </div>
+
+  <div class="countdown-wrapper">
+    <h2 class="section-title" data-aos="fade-right"><i class="fas fa-hourglass-half"></i> Counting to Forever</h2>
+    <div class="countdown-grid">
+      <div class="time-card"><div class="time-num" id="days">00</div><div class="time-label">Days</div></div>
+      <div class="time-card"><div class="time-num" id="hours">00</div><div class="time-label">Hours</div></div>
+      <div class="time-card"><div class="time-num" id="minutes">00</div><div class="time-label">Minutes</div></div>
+      <div class="time-card"><div class="time-num" id="seconds">00</div><div class="time-label">Seconds</div></div>
+    </div>
+  </div>
+
+  <!-- ETERNAL MOMENTS: SWIPER GALLERY SMOOTH SWIPE -->
+  <div class="gallery-premium">
+    <h2 class="section-title" data-aos="fade-left"><i class="fas fa-camera"></i> Eternal Moments</h2>
+    <div class="swiper-container gallerySwiper" data-aos="fade-up">
+      <div class="swiper-wrapper" id="swiperWrapper">
+        <!-- dynamic -->
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+
+  <div class="rsvp-luxury">
+    <div class="rsvp-container" data-aos="zoom-in">
+      <h2 style="font-family:'Cormorant Garamond'; font-size: 2.5rem; color:#f1db8b;">Share Your Blessings</h2>
+      <p style="margin-bottom: 1.6rem; color:#e2be7a;">Kindly grace us with your response</p>
+      <form id="rsvpForm">
+        <div class="form-group"><input type="text" id="guestName" placeholder="Your Full Name" required></div>
+        <div class="form-group"><input type="number" id="guestCount" placeholder="Number of Guests" required></div>
+        <div class="form-group">
+          <select id="attendance" required>
+            <option value="">Will you be joining?</option>
+            <option value="Delighted to attend">💖 Delighted to attend</option>
+            <option value="Will join virtually">🕊️ Virtual blessings</option>
+            <option value="Regretfully absent">🍃 Unable to attend</option>
+          </select>
+        </div>
+        <div class="form-group"><textarea id="blessings" rows="3" placeholder="Your heartfelt wishes for us..."></textarea></div>
+        <button type="submit" class="rsvp-btn"><i class="fas fa-envelope-open-text"></i> Send with Love</button>
+      </form>
+      <p id="rsvpFeedback" style="margin-top: 1rem; font-size: 0.8rem; color:#efcd82;"></p>
+    </div>
+  </div>
+
+  <div class="footer-romantic">
+    <p><i class="fas fa-feather-alt"></i> Together is a beautiful place to be <i class="fas fa-feather-alt"></i></p>
+    <p style="margin-top: 5px;">Vivek & Mital | 18th June 2025</p>
+  </div>
+
+  <div id="toastMsg" class="toast-msg">✨ Your warmth received ✨</div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  (function() {
+    // ========== 1. Intro logic ==========
+    const introDiv = document.getElementById('introScreen');
+    const mainSite = document.getElementById('mainSite');
+    const openBtn = document.getElementById('openInviteBtn');
+    
+    function openInvite() {
+      introDiv.style.opacity = '0';
+      setTimeout(() => {
+        introDiv.style.display = 'none';
+        mainSite.style.display = 'block';
+        document.body.style.overflow = 'auto';
+        initFallingPetals();
+        // ensure swiper updates after display block
+        setTimeout(() => {
+          if(window.gallerySwiperInstance) {
+            window.gallerySwiperInstance.update();
+            window.gallerySwiperInstance.autoplay?.start();
+          }
+        }, 200);
+      }, 950);
+    }
+    if(openBtn) openBtn.addEventListener('click', openInvite);
+
+    // ========== 2. Countdown to June 18, 2025 10:00 AM IST ==========
+    // Using IST (GMT+5:30) explicitly
+    const targetDate = new Date("June 18, 2025 10:00:00 GMT+0530");
+    
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate.getTime() - now.getTime();
+      
+      const daysElem = document.getElementById("days");
+      const hoursElem = document.getElementById("hours");
+      const minutesElem = document.getElementById("minutes");
+      const secondsElem = document.getElementById("seconds");
+      
+      if (!daysElem) return;
+      
+      if (diff <= 0) {
+        daysElem.innerHTML = "00";
+        hoursElem.innerHTML = "00";
+        minutesElem.innerHTML = "00";
+        secondsElem.innerHTML = "00";
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (86400000)) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      
+      daysElem.innerHTML = days < 10 ? '0' + days : days;
+      hoursElem.innerHTML = hours < 10 ? '0' + hours : hours;
+      minutesElem.innerHTML = minutes < 10 ? '0' + minutes : minutes;
+      secondsElem.innerHTML = seconds < 10 ? '0' + seconds : seconds;
+    }
+    
+    // immediate call and set interval
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    
+    // ========== 3. GALLERY with SwiperJS - better performance ==========
+    // Use local images from images/ folder
+    const galleryPhotos = [
+      "images/photo1.jpg",
+      "images/photo2.jpg",
+      "images/photo3.jpg",
+      "images/photo4.jpg",
+      "images/photo5.jpg",
+      "images/photo6.jpg"
+    ];
+    const captions = ["Timeless Vows", "Radiance of Love", "Eternal Glow", "Sacred Union", "Joyful Hearts", "Ever After"];
+
+    const swiperWrapper = document.getElementById('swiperWrapper');
+    if (swiperWrapper) {
+      galleryPhotos.forEach((src, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `
+          <img src="${src}" alt="Love moment ${idx+1}" loading="lazy">
+          <div class="gallery-caption"><i class="fas fa-heart" style="font-size:0.7rem;"></i> ${captions[idx]} <i class="fas fa-heart" style="font-size:0.7rem;"></i></div>
+        `;
+        swiperWrapper.appendChild(slide);
+      });
+    }
+    
+    let gallerySwiper = null;
+    function initSwiperGallery() {
+      if (gallerySwiper) gallerySwiper.destroy(true, true);
+      gallerySwiper = new Swiper('.gallerySwiper', {
+        loop: true,
+        slidesPerView: 1.15,
+        centeredSlides: true,
+        spaceBetween: 18,
+        pagination: { el: '.swiper-pagination', clickable: true, dynamicBullets: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        autoplay: { delay: 3800, disableOnInteraction: false, pauseOnMouseEnter: true },
+        breakpoints: {
+          480: { slidesPerView: 1.3, spaceBetween: 20 },
+          768: { slidesPerView: 1.5, spaceBetween: 24 }
+        },
+        speed: 500,
+        touchRatio: 1.3,
+        resistance: true,
+        grabCursor: true,
+      });
+      window.gallerySwiperInstance = gallerySwiper;
+    }
+    
+    // ========== 4. Falling petals animation - highly optimized for mobile ==========
+    let animFrameId = null;
+    function initFallingPetals() {
+      const canvas = document.getElementById('petalCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      
+      const petalCount = Math.min(10, Math.floor(window.innerWidth / 90) + 4);
+      const symbols = ['🌸', '🌼', '🌺', '🍂', '🌷'];
+      const petals = [];
+      for (let i = 0; i < petalCount; i++) {
+        petals.push({
+          x: Math.random() * width,
+          y: Math.random() * height - height,
+          size: 14 + Math.random() * 8,
+          speedY: 0.5 + Math.random() * 0.6,
+          speedX: (Math.random() - 0.5) * 0.2,
+          rotation: Math.random() * 360,
+          spin: 0.2 + Math.random() * 0.4,
+          char: symbols[Math.floor(Math.random() * symbols.length)],
+          opacity: 0.55 + Math.random() * 0.35
+        });
+      }
+      
+      function drawPetals() {
+        if (!ctx || !canvas) return;
+        ctx.clearRect(0, 0, width, height);
+        for (let p of petals) {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation * Math.PI / 180);
+          ctx.font = `${p.size}px "Segoe UI Emoji", "Apple Color Emoji"`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.shadowBlur = 3;
+          ctx.shadowColor = "rgba(200,150,50,0.3)";
+          ctx.globalAlpha = p.opacity;
+          ctx.fillStyle = `rgba(245, 215, 130, 0.85)`;
+          ctx.fillText(p.char, 0, 0);
+          ctx.restore();
+          
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.spin;
+          if (p.y > height + 40) {
+            p.y = -40;
+            p.x = Math.random() * width;
+          }
+          if (p.x > width + 40) p.x = -40;
+          if (p.x < -40) p.x = width + 20;
+        }
+        animFrameId = requestAnimationFrame(drawPetals);
+      }
+      
+      function handleResize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+      window.addEventListener('resize', handleResize);
+      drawPetals();
+    }
+    
+    // ========== 5. RSVP with toast ==========
+    const rsvpForm = document.getElementById('rsvpForm');
+    const toastMsg = document.getElementById('toastMsg');
+    const rsvpFeedbackSpan = document.getElementById('rsvpFeedback');
+    
+    function showMessage(msg, isSuccess = true) {
+      toastMsg.innerText = msg;
+      toastMsg.classList.add('show');
+      setTimeout(() => toastMsg.classList.remove('show'), 3200);
+      if (rsvpFeedbackSpan) {
+        rsvpFeedbackSpan.innerHTML = isSuccess ? "✨ Thank you! Your response warms our hearts. ✨" : "💫 Please fill all required fields.";
+        setTimeout(() => { if(rsvpFeedbackSpan) rsvpFeedbackSpan.innerHTML = ""; }, 3800);
+      }
+    }
+    
+    if (rsvpForm) {
+      rsvpForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('guestName').value.trim();
+        const count = document.getElementById('guestCount').value.trim();
+        const attendance = document.getElementById('attendance').value;
+        if (!name || !count || !attendance) {
+          showMessage("💫 Kindly fill name, guest count & attendance 💫", false);
+          return;
+        }
+        showMessage(`❤️ Dearest ${name}, your presence is a cherished gift! ❤️`, true);
+        rsvpForm.reset();
+      });
+    }
+    
+    // ========== 6. Initialize gallery after main site becomes visible ==========
+    const observer = new MutationObserver((mutations) => {
+      if (mainSite.style.display === 'block') {
+        if (!window.galleryInitialized) {
+          initSwiperGallery();
+          window.galleryInitialized = true;
+        }
+        observer.disconnect();
+      }
+    });
+    observer.observe(mainSite, { attributes: true, attributeFilter: ['style'] });
+    
+    // Fallback if already visible after load
+    window.addEventListener('load', () => {
+      if (mainSite.style.display === 'block' && !window.galleryInitialized) {
+        initSwiperGallery();
+        window.galleryInitialized = true;
+      } else if (mainSite.style.display === 'block' && window.gallerySwiperInstance) {
+        setTimeout(() => window.gallerySwiperInstance.update(), 100);
+      }
+      // Also init AOS
+      AOS.init({ duration: 700, once: true, offset: 10 });
+    });
+    
+    // Ensure body scroll initially locked for intro, but main allows scroll
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      if (introDiv.style.display === 'none') document.body.style.overflow = 'auto';
+    }, 200);
+    
+    // extra safety for swiper on orientation
+    window.addEventListener('resize', () => {
+      if (window.gallerySwiperInstance) setTimeout(() => window.gallerySwiperInstance.update(), 80);
+    });
+  })();
+</script>
+</body>
+</html>
